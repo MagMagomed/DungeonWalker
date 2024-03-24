@@ -34,8 +34,8 @@ namespace Assets.Scripts
             if (mouseX != 0 || mouseY != 0)
             {
                 transform.LookAt(_target);
-                transform.RotateAround(_target.position, transform.up, mouseX);
-                transform.RotateAround(_target.position, transform.right, -mouseY);
+                transform.RotateAround(_target.position, transform.up, mouseX * _lookSpeed);
+                transform.RotateAround(_target.position, transform.right, -mouseY * _lookSpeed);
                 _offset = transform.position - _target.position;
             }
         }
