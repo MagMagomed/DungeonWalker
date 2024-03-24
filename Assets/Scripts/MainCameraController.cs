@@ -33,7 +33,7 @@ namespace Assets.Scripts
             float mouseY = Input.GetAxis("Mouse Y");
             if (mouseX != 0 || mouseY != 0)
             {
-                transform.LookAt(_target);
+                transform.LookAt(_target.position + _offset);
                 transform.RotateAround(_target.position, transform.up, mouseX * _lookSpeed);
                 transform.RotateAround(_target.position, transform.right, -mouseY * _lookSpeed);
                 _offset = transform.position - _target.position;
