@@ -17,11 +17,29 @@ namespace Assets.Scripts
         private void Start()
         {
             _offset = transform.position - _target.position;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
         private void Update()
         {
-            transform.LookAt(_target);
-            transform.Translate(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0);
+            MoveForward();
+            MoveAround();
+        }
+        private void MoveForward()
+        {
+            transform.position = _target.position + _offset;
+        }
+        private void MoveAround()
+        {
+            float mouseX = Input.GetAxis("Mouse X");
+            float mouseY = Input.GetAxis("Mouse Y");
+            if (mouseX != 0 || mouseY != 0)
+            {
+                transform.LookAt(_target);
+                transform.RotateAround(_target.position, transform.up, mouseX);
+                transform.RotateAround(_target.position, transform.right, -mouseY);
+                _offset = transform.position - _target.position;
+            }
         }
     }
 }
