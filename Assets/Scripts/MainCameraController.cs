@@ -11,8 +11,8 @@ namespace Assets.Scripts
 {
     public class MainCameraController : MonoBehaviour
     {
-        [SerializeField] Transform _target;
-        [SerializeField] float _lookSpeed;
+        [SerializeField] private Transform _target;
+        [SerializeField] private float _lookSpeed;
         private Vector3 _offset;
         private void Start()
         {
