@@ -17,8 +17,6 @@ namespace Assets.Scripts
         private void Start()
         {
             _offset = transform.position - _target.position;
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
         }
         private void Update()
         {
