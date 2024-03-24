@@ -20,14 +20,14 @@ namespace Assets.Scripts
         }
         private void Update()
         {
-            MoveForward();
-            MoveAround();
+            FollowTarget();
+            MoveAroundTarget();
         }
-        private void MoveForward()
+        private void FollowTarget()
         {
             transform.position = _target.position + _offset;
         }
-        private void MoveAround()
+        private void MoveAroundTarget()
         {
             float mouseX = Input.GetAxis("Mouse X");
             float mouseY = Input.GetAxis("Mouse Y");
