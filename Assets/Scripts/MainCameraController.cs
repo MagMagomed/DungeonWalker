@@ -36,6 +36,7 @@ namespace Assets.Scripts
                 transform.LookAt(_target.position + _offset);
                 transform.RotateAround(_target.position, transform.up, mouseX * _lookSpeed);
                 transform.RotateAround(_target.position, transform.right, -mouseY * _lookSpeed);
+                transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0);
                 _offset = transform.position - _target.position;
             }
         }
