@@ -123,11 +123,67 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &140199036 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6399527072551279179, guid: 4089621f7959ea548b885731b08a9c5d, type: 3}
+  m_PrefabInstance: {fileID: 6399527072681778743}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &140199037 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 6399527072551279178, guid: 4089621f7959ea548b885731b08a9c5d, type: 3}
+  m_PrefabInstance: {fileID: 6399527072681778743}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &140199041 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6399527072551279286, guid: 4089621f7959ea548b885731b08a9c5d, type: 3}
   m_PrefabInstance: {fileID: 6399527072681778743}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &140199044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 140199036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95b71c2dc03afdb4689d60b3a9fb67dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _yAnimation:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 3.4939256
+      outSlope: 3.4939256
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.08481336
+    - serializedVersion: 3
+      time: 0.5449429
+      value: 1.0026988
+      inSlope: 0.12232693
+      outSlope: 0.12232693
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.15363397
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.99779
+      value: 0.10910836
+      inSlope: -3.6912282
+      outSlope: -3.6912282
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.13464704
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _jumpForce: 20
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,10 +498,42 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6399527072551279178, guid: 4089621f7959ea548b885731b08a9c5d, type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6399527072551279178, guid: 4089621f7959ea548b885731b08a9c5d, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6399527072551279178, guid: 4089621f7959ea548b885731b08a9c5d, type: 3}
+      propertyPath: m_AngularDrag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6399527072551279178, guid: 4089621f7959ea548b885731b08a9c5d, type: 3}
+      propertyPath: m_Interpolate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6399527072551279178, guid: 4089621f7959ea548b885731b08a9c5d, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6399527072551279178, guid: 4089621f7959ea548b885731b08a9c5d, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6399527072551279179, guid: 4089621f7959ea548b885731b08a9c5d, type: 3}
       propertyPath: m_Name
       value: DefaultPlayer
       objectReference: {fileID: 0}
+    - target: {fileID: 6399527072551279285, guid: 4089621f7959ea548b885731b08a9c5d, type: 3}
+      propertyPath: _jumpFX
+      value: 
+      objectReference: {fileID: 140199044}
+    - target: {fileID: 6399527072551279285, guid: 4089621f7959ea548b885731b08a9c5d, type: 3}
+      propertyPath: _rigidbody
+      value: 
+      objectReference: {fileID: 140199037}
     - target: {fileID: 6399527072551279286, guid: 4089621f7959ea548b885731b08a9c5d, type: 3}
       propertyPath: m_RootOrder
       value: 2
