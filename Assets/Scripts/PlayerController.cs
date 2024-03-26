@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -8,20 +9,23 @@ namespace Assets.Scripts
     {
         [SerializeField] private float _speed = 5.0f;
         [SerializeField] private JumpFX _jumpFX;
-        [SerializeField] private Rigidbody _rigidbody;
+        [SerializeField] private RigidBodyDecorator _rigidBodyDecorator;
         [SerializeField] private bool _canJump;
+        private Debugger _debugger;
         private Transform _cameraTransform;
         private void Start()
         {
             // Get the camera transform
             _cameraTransform = Camera.main.transform;
+            _jumpFX.AddOnJump(() => { _rigidBodyDecorator.SetUseGravity(false); });
+            _jumpFX.AddOnJumpEnded(() => { _rigidBodyDecorator.SetUseGravity(true); });
         }
         private void Update()
         {
             float moveHorizontal = Input.GetAxisRaw("Horizontal");
             float moveVertical = Input.GetAxisRaw("Vertical");
             float shift = Input.GetAxisRaw("Fire3");
-            if(Input.GetAxisRaw("Jump") > 0)
+            if(Input.GetKeyDown(KeyCode.Space))
             {
                 Jump();
             }
@@ -41,23 +45,25 @@ namespace Assets.Scripts
             transform.rotation = new Quaternion(0, _cameraTransform.transform.rotation.y, 0, _cameraTransform.transform.rotation.w);
             transform.Translate(movement * speed * Time.deltaTime);
         }
-        private void OnCollisionEnter(Collision collision)
-        {
-            _canJump = true;
-        }
         private void OnCollisionStay(Collision collision)
         {
             _canJump = true;
         }
-        private void OnCollisionExit(Collision collision)
+        private void OnCollisionExit(Collision collision) 
         {
             _canJump = false;
         }
         private void Jump()
         {
             if(_canJump)
-                _rigidbody.AddForce(Vector3.up, ForceMode.Impulse);
-            //_jumpFX.PlayAnimation(transform, 1);
+            {
+                _jumpFX.PlayAnimation(transform);
+            }
+        }
+        private void OnDestroy()
+        {
+            _jumpFX.RemoveOnJump(() => { _rigidBodyDecorator.SetUseGravity(false); });
+            _jumpFX.RemoveOnJumpEnded(() => { _rigidBodyDecorator.SetUseGravity(true); });
         }
     }
 }
