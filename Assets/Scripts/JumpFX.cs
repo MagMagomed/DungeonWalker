@@ -20,6 +20,10 @@ namespace Assets.Scripts
         {
             StartCoroutine(AnimationByTime(jumper, _jumpDuration));
         }
+        public void PlayAnimation(Transform jumper, Vector2 direction)
+        {
+            StartCoroutine(AnimationByTime(jumper, _jumpDuration, direction));
+        }
         private IEnumerator AnimationByTime(Transform jumper, float duration)
         {
             foreach (var action in onJump)
@@ -34,6 +38,28 @@ namespace Assets.Scripts
                 exprideSeconds += Time.deltaTime;
                 progress = exprideSeconds / duration;
                 float evaluted = Mathf.Approximately(_yAnimation.Evaluate(progress), 0f)? 0f : _yAnimation.Evaluate(progress);
+                jumper.position = startPosition + new Vector3(0, evaluted * _jumpForce, 0);
+                yield return null;
+            }
+            foreach (var action in onJumpEnded)
+            {
+                action.Invoke();
+            }
+        }
+        private IEnumerator AnimationByTime(Transform jumper, float duration, Vector2 direction)
+        {
+            foreach (var action in onJump)
+            {
+                action.Invoke();
+            }
+            float exprideSeconds = 0;
+            float progress = 0;
+            Vector3 startPosition = jumper.position;
+            while (progress < 1f)
+            {
+                exprideSeconds += Time.deltaTime;
+                progress = exprideSeconds / duration;
+                float evaluted = Mathf.Approximately(_yAnimation.Evaluate(progress), 0f) ? 0f : _yAnimation.Evaluate(progress);
                 jumper.position = startPosition + new Vector3(0, evaluted * _jumpForce, 0);
                 yield return null;
             }
