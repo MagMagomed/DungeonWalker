@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Animations;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.Windows;
 
@@ -22,6 +24,8 @@ namespace Assets.Scripts
         [SerializeField] LayerMask _ground;
         [SerializeField] float _groundDistance;
 
+        [SerializeField] Animator _animator;
+
 
         private Debugger _debugger;
         private Transform _cameraTransform;
@@ -35,6 +39,7 @@ namespace Assets.Scripts
         }
         private void Update()
         {
+            _animator.SetFloat("xVelocity", _input.MoveDirection.magnitude);
             if (_input.MoveDirection.magnitude > 0)
             {
                 UpdateRotation();
