@@ -14,6 +14,8 @@ namespace Assets.Scripts
     {
         [SerializeField] private float _speed = 5.0f;
         [SerializeField] private float _sprintSpeed = 10.0f;
+        [SerializeField] private float _rotationVelocity = 1f;
+        [SerializeField] private float _rotationTime = 1f;
 
         [SerializeField] private JumpFX _jumpFX;
         [SerializeField] private GravityFX _gravityFX;
@@ -43,7 +45,7 @@ namespace Assets.Scripts
             if (_input.MoveDirection.magnitude > 0)
             {
                 UpdateRotation();
-                if (_input.Sprint) Run(_input.MoveDirection); else Walk(_input.MoveDirection);
+                if (_input.Sprint) Run(); else Walk();
             }
         }
         private void LateUpdate()
@@ -57,17 +59,17 @@ namespace Assets.Scripts
                 _gravityFX.Fall();
             }
         }
-        private void Walk(Vector3 moveDirection)
+        private void Walk()
         {
-            Move(moveDirection, _speed);
+            Move(_speed);
         }
-        private void Run(Vector3 moveDirection)
+        private void Run()
         {
-            Move(moveDirection, _sprintSpeed);
+            Move(_sprintSpeed);
         }
-        private void Move(Vector3 moveDirection, float speed)
+        private void Move(float speed)
         {
-            var moveVelocity = transform.rotation.normalized * moveDirection * speed * Time.deltaTime;
+            var moveVelocity = transform.forward * speed * Time.deltaTime;
             if (IsGrounded())
             {
                 _characterController.Move(moveVelocity);
@@ -84,9 +86,11 @@ namespace Assets.Scripts
         }
         private void UpdateRotation()
         {
-            transform.rotation = new Quaternion(0, _cameraTransform.transform.rotation.y, 0, _cameraTransform.transform.rotation.w);
+            var targetRotation = Mathf.Atan2(_input.MoveDirection.x, _input.MoveDirection.z) * Mathf.Rad2Deg +
+                                  _cameraTransform.eulerAngles.y;
+            float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref _rotationVelocity, _rotationTime);
+            transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
             _characterController.transform.rotation = transform.rotation;
-
         }
         private void OnDestroy()
         {
