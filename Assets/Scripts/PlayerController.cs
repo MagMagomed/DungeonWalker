@@ -1,67 +1,92 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
+using UnityEngine.Windows;
 
 namespace Assets.Scripts
 {
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private float _speed = 5.0f;
+        [SerializeField] private float _sprintSpeed = 10.0f;
+
         [SerializeField] private JumpFX _jumpFX;
         [SerializeField] private GravityFX _gravityFX;
         [SerializeField] private RigidBodyDecorator _rigidBodyDecorator;
-        [SerializeField] CharacterController _characterController;
+        [SerializeField] private CharacterController _characterController;
+        [SerializeField] private InputController _input;
+
+        [SerializeField] LayerMask _ground;
+        [SerializeField] float _groundDistance;
+
+
         private Debugger _debugger;
         private Transform _cameraTransform;
-
+        private bool _jumpInProgress;
         private void Start()
         {
             // Get the camera transform
             _cameraTransform = Camera.main.transform;
-            _jumpFX.AddOnJumpEnded(() => { _gravityFX.PlayAnimation(); });
+            _jumpFX.AddOnJump(() => { _jumpInProgress = true; });
+            _jumpFX.AddOnJumpEnded(() => { _gravityFX.Fall(); _jumpInProgress = false; });
         }
         private void Update()
         {
-            float moveHorizontal = Input.GetAxisRaw("Horizontal");
-            float moveVertical = Input.GetAxisRaw("Vertical");
-            float shift = Input.GetAxisRaw("Fire3");
-
-            if (shift > 0) Run(moveHorizontal, moveVertical); else Walk(moveHorizontal, moveVertical);
+            if (_input.MoveDirection.magnitude > 0)
+            {
+                UpdateRotation();
+                if (_input.Sprint) Run(_input.MoveDirection); else Walk(_input.MoveDirection);
+            }
         }
         private void LateUpdate()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (_input.Jump)
             {
-                Jump();
+                Jump(_input.MoveDirection);
+            }
+            if (!_jumpInProgress)
+            {
+                _gravityFX.Fall();
             }
         }
-        private void Walk(float moveHorizontal, float moveVertical)
+        private void Walk(Vector3 moveDirection)
         {
-            Move(moveHorizontal, moveVertical, _speed);
+            Move(moveDirection, _speed);
         }
-        private void Run(float moveHorizontal, float moveVertical)
+        private void Run(Vector3 moveDirection)
         {
-            Move(moveHorizontal, moveVertical, _speed * 2);
+            Move(moveDirection, _sprintSpeed);
         }
-        private void Move(float moveHorizontal, float moveVertical, float speed)
+        private void Move(Vector3 moveDirection, float speed)
         {
-            if (object.ReferenceEquals(_characterController, null)) throw new System.InvalidOperationException("CharacterMotor must be initialized with an appropriate CharacterController.");
-            var mv = new Vector3(moveHorizontal, 0.0f, moveVertical) * speed * Time.deltaTime;
+            var moveVelocity = transform.rotation.normalized * moveDirection * speed * Time.deltaTime;
+            if (IsGrounded())
+            {
+                _characterController.Move(moveVelocity);
+            }
+        }
+        private void Jump(Vector3 moveDirection)
+        {
+            _jumpFX.PlayAnimation(transform, moveDirection);
+        }
+        private bool IsGrounded()
+        {
+            //return Physics.CheckSphere(transform.position, _groundDistance, _ground, QueryTriggerInteraction.Ignore);
+            return _characterController.detectCollisions;
+        }
+        private void UpdateRotation()
+        {
+            transform.rotation = new Quaternion(0, _cameraTransform.transform.rotation.y, 0, _cameraTransform.transform.rotation.w);
+            _characterController.transform.rotation = transform.rotation;
 
-            if (_characterController.detectCollisions)
-            {
-                _characterController.Move(mv);
-            }
-        }
-        private void Jump()
-        {
-            _jumpFX.PlayAnimation(transform, transform.forward);
         }
         private void OnDestroy()
         {
-            _jumpFX.RemoveOnJumpEnded(() => { _gravityFX.PlayAnimation(); });
+            _jumpFX.RemoveOnJump(() => { _jumpInProgress = true; });
+            _jumpFX.RemoveOnJumpEnded(() => { _gravityFX.Fall(); _jumpInProgress = false; });
         }
     }
 }

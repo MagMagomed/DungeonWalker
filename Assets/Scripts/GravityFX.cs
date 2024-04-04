@@ -16,38 +16,24 @@ namespace Assets.Scripts
 
         [SerializeField] CharacterController _characterController;
         [SerializeField] Transform _groundChecker;
-        [SerializeField] AnimationCurve _yAnimation;
         [SerializeField] LayerMask _ground;
 
         [SerializeField] float _gravity;
         [SerializeField] float _groundDistance;
 
-        [SerializeField] float _progress;
-        [SerializeField] float _evaluted;
-
         private bool _isGrounded;
-
-        public void Update()
+        public void Fall()
         {
+            StartCoroutine(MoveDown());
+        }
+        public IEnumerator MoveDown()
+        {
+            float yVelocity = 0;
             _isGrounded = Physics.CheckSphere(transform.position, _groundDistance, _ground, QueryTriggerInteraction.Ignore);
-            if (!_isGrounded)
-            {
-                PlayAnimation();
-            }
-        }
-        public void PlayAnimation()
-        {
-            StartCoroutine(Animation());
-        }
-        private IEnumerator Animation()
-        {
-            float exprideSeconds = 0;
             while (!_isGrounded)
             {
-                exprideSeconds += Time.deltaTime;
-                _progress = exprideSeconds;
-                float yVelocity = _yAnimation.Evaluate(exprideSeconds) * _gravity;
-                _evaluted = yVelocity;
+                _isGrounded = Physics.CheckSphere(transform.position, _groundDistance, _ground, QueryTriggerInteraction.Ignore);
+                yVelocity += _gravity * Time.deltaTime;
                 _characterController.Move(new Vector3(0, -yVelocity, 0) * Time.deltaTime);
                 yield return null;
             }

@@ -10,6 +10,7 @@ namespace Assets.Scripts
 {
     internal class JumpFX : MonoBehaviour
     {
+        [SerializeField] CharacterController _characterController;
         [SerializeField] private AnimationCurve _yAnimation;
         [SerializeField] private float _jumpForce;
         [SerializeField] private float _jumpDuration;
@@ -20,7 +21,7 @@ namespace Assets.Scripts
         {
             StartCoroutine(AnimationByTime(jumper, _jumpDuration));
         }
-        public void PlayAnimation(Transform jumper, Vector2 direction)
+        public void PlayAnimation(Transform jumper, Vector3 direction)
         {
             StartCoroutine(AnimationByTime(jumper, _jumpDuration, direction));
         }
@@ -46,7 +47,7 @@ namespace Assets.Scripts
                 action.Invoke();
             }
         }
-        private IEnumerator AnimationByTime(Transform jumper, float duration, Vector2 direction)
+        private IEnumerator AnimationByTime(Transform jumper, float duration, Vector3 direction)
         {
             foreach (var action in onJump)
             {
@@ -54,13 +55,22 @@ namespace Assets.Scripts
             }
             float exprideSeconds = 0;
             float progress = 0;
+            float evaluted = 0f;
+            float maxEvaluted = 0f;
             Vector3 startPosition = jumper.position;
             while (progress < 1f)
             {
                 exprideSeconds += Time.deltaTime;
                 progress = exprideSeconds / duration;
-                float evaluted = Mathf.Approximately(_yAnimation.Evaluate(progress), 0f) ? 0f : _yAnimation.Evaluate(progress);
-                jumper.position = startPosition + new Vector3(0, evaluted * _jumpForce, 0);
+                startPosition.x += direction.x * Time.deltaTime;
+                startPosition.z += direction.z * Time.deltaTime;
+                evaluted = _yAnimation.Evaluate(progress);
+                maxEvaluted = evaluted > maxEvaluted? evaluted : maxEvaluted;
+                if(evaluted < maxEvaluted)
+                {
+                    evaluted = -evaluted;
+                }
+                //_characterController.Move(new Vector3(0, evaluted * _jumpForce, 0) * Time.deltaTime);
                 yield return null;
             }
             foreach (var action in onJumpEnded)
