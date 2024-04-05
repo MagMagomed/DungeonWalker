@@ -41,7 +41,7 @@ namespace Assets.Scripts
         }
         private void Update()
         {
-            _animator.SetFloat("xVelocity", _input.MoveDirection.magnitude);
+            _animator.SetFloat("xVelocity", _input.Sprint? _input.MoveDirection.magnitude * _sprintSpeed : _input.MoveDirection.magnitude * _speed);
             if (_input.MoveDirection.magnitude > 0)
             {
                 UpdateRotation();
