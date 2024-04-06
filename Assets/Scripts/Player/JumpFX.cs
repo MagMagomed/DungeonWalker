@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.Player
 {
     internal class JumpFX : MonoBehaviour
     {
@@ -70,7 +70,7 @@ namespace Assets.Scripts
                 {
                     evaluted = -evaluted;
                 }
-                //_characterController.Move(new Vector3(0, evaluted * _jumpForce, 0) * Time.deltaTime);
+                //jumper.position += (new Vector3(0, evaluted * _jumpForce, 0) * Time.deltaTime);
                 yield return null;
             }
             foreach (var action in onJumpEnded)

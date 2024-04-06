@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.Windows;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.Player
 {
     public class PlayerController : MonoBehaviour
     {
@@ -26,7 +26,7 @@ namespace Assets.Scripts
         [SerializeField] LayerMask _ground;
         [SerializeField] float _groundDistance;
 
-        [SerializeField] Animator _animator;
+        [SerializeField] PlayerAnimationController _animationController;
 
 
         private Debugger _debugger;
@@ -41,7 +41,7 @@ namespace Assets.Scripts
         }
         private void Update()
         {
-            _animator.SetFloat("xVelocity", _input.Sprint? _input.MoveDirection.magnitude * _sprintSpeed : _input.MoveDirection.magnitude * _speed);
+            _animationController.SetXVelocity(_input.Sprint? _input.MoveDirection.magnitude * _sprintSpeed : _input.MoveDirection.magnitude * _speed);
             if (_input.MoveDirection.magnitude > 0)
             {
                 UpdateRotation();
