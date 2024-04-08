@@ -3850,7 +3850,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1949949889}
-  m_LocalRotation: {x: 0.8542165, y: 0.38989314, z: -0.07520227, w: 0.33562198}
+  m_LocalRotation: {x: 0.92272866, y: 0.17276196, z: 0.12938777, w: 0.31934932}
   m_LocalPosition: {x: -0.287, y: 0, z: 0.817}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3899,7 +3899,7 @@ MonoBehaviour:
       m_Item7:
         transform: {fileID: 0}
         weight: 0
-    m_Offset: {x: 14.6, y: -36.6, z: 122.86}
+    m_Offset: {x: 14.6, y: -29.99, z: 108.8}
     m_ConstrainedAxes:
       x: 1
       y: 1
