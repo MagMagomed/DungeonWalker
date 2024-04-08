@@ -20,7 +20,7 @@ namespace Assets.Scripts.Player.RigProceduralAnimation.HandAnimation
 
         [SerializeField] private LayerMask _wallLayer;
         [SerializeField] private float _maxDistance;
-        [SerializeField] private float _rayOffset;
+        [SerializeField] private Vector3 _rayOffset;
         [SerializeField] private Vector3 _rayDirection;
 
         [SerializeField] private TwoBoneIKAnimation _twoBoneIKanimation;
@@ -29,7 +29,7 @@ namespace Assets.Scripts.Player.RigProceduralAnimation.HandAnimation
         private void Update()
         {
             var rayTouchWall = false;
-            _ray = new Ray(_handRig.position + _handRig.forward * _rayOffset, _handRig.rotation * _rayDirection);
+            _ray = new Ray(_handRig.position + _handRig.rotation * _rayOffset, _handRig.rotation * _rayDirection);
             rayTouchWall = Physics.Raycast(_ray, out RaycastHit hitInfo, _maxDistance, _wallLayer, QueryTriggerInteraction.UseGlobal);
 
             if (rayTouchWall) _twoBoneIKanimation.PlayAnimation(hitInfo.point);
