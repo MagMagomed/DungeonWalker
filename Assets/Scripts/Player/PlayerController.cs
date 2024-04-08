@@ -36,8 +36,8 @@ namespace Assets.Scripts.Player
         {
             // Get the camera transform
             _cameraTransform = Camera.main.transform;
-            _jumpFX.AddOnJump(() => { _jumpInProgress = true; });
-            _jumpFX.AddOnJumpEnded(() => { _gravityFX.Fall(); _jumpInProgress = false; });
+            //_jumpFX.AddOnJump(() => { _jumpInProgress = true; });
+            //_jumpFX.AddOnJumpEnded(() => { _gravityFX.Fall(); _jumpInProgress = false; });
         }
         private void Update()
         {
@@ -56,7 +56,7 @@ namespace Assets.Scripts.Player
             }
             if (!_jumpInProgress)
             {
-                _gravityFX.Fall();
+                //_gravityFX.Fall();
             }
         }
         private void Walk()
@@ -94,8 +94,8 @@ namespace Assets.Scripts.Player
         }
         private void OnDestroy()
         {
-            _jumpFX.RemoveOnJump(() => { _jumpInProgress = true; });
-            _jumpFX.RemoveOnJumpEnded(() => { _gravityFX.Fall(); _jumpInProgress = false; });
+            //_jumpFX.RemoveOnJump(() => { _jumpInProgress = true; });
+            //_jumpFX.RemoveOnJumpEnded(() => { _gravityFX.Fall(); _jumpInProgress = false; });
         }
     }
 }

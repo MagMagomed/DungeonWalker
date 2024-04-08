@@ -14,35 +14,34 @@ namespace Assets.Scripts.Player
     internal class GravityFX : MonoBehaviour
     {
 
-        [SerializeField] CharacterController _characterController;
-        [SerializeField] Transform _groundChecker;
-        [SerializeField] LayerMask _ground;
-        [SerializeField] Vector3 _offsetSphereCast;
-
-        [SerializeField] float _gravity;
-        [SerializeField] float _groundDistance;
-
-        private bool _isGrounded;
+        [SerializeField] private CharacterController _characterController;
+        [SerializeField] private float _gravity;
+        [SerializeField] private Vector3 _Velocity;
+        private void Update()
+        {
+            if (!_characterController.isGrounded)
+            {
+                _Velocity -= _characterController.transform.up * _gravity * Time.deltaTime;
+                _characterController.Move(_Velocity);
+            }
+            if (_characterController.isGrounded)
+            {
+                _Velocity = Vector3.zero;
+            }
+        }
         public void Fall()
         {
             StartCoroutine(MoveDown());
         }
         public IEnumerator MoveDown()
         {
-            float yVelocity = 0;
-            var sphereCastCenter = transform.position + _offsetSphereCast;
-            _isGrounded = Physics.CheckSphere(sphereCastCenter, _groundDistance, _ground, QueryTriggerInteraction.Ignore);
-            while (!_isGrounded)
+            _Velocity = Vector3.zero;
+            while (!_characterController.isGrounded)
             {
-                _isGrounded = Physics.CheckSphere(sphereCastCenter, _groundDistance, _ground, QueryTriggerInteraction.Ignore);
-                yVelocity += _gravity * Time.deltaTime;
-                _characterController.Move(new Vector3(0, -yVelocity, 0) * Time.deltaTime);
+                _Velocity = -_characterController.transform.up * _gravity * Time.deltaTime;
+                _characterController.Move(_Velocity);
                 yield return null;
             }
-        }
-        private void OnDrawGizmos()
-        {
-            Gizmos.DrawSphere(transform.position + _offsetSphereCast, _groundDistance);
         }
     }
 }
