@@ -13,7 +13,6 @@ namespace Assets.Scripts.Player.RigProceduralAnimation.LegAnimations
         private Transform _transform;
         private Ray _ray;
         [SerializeField] private Vector3 _rayDirection;
-
         public Vector3 Position => _hit.point;
         public Vector3 Normal => _hit.normal;
 
@@ -31,6 +30,7 @@ namespace Assets.Scripts.Player.RigProceduralAnimation.LegAnimations
         {
             Gizmos.color = Color.red;
             Gizmos.DrawRay(_ray);
+            Gizmos.DrawSphere(_hit.point, 0.1f);
         }
     }
 }

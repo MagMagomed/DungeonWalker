@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 namespace Assets.Scripts.Player.RigProceduralAnimation.LegAnimations
 {
@@ -27,15 +28,10 @@ namespace Assets.Scripts.Player.RigProceduralAnimation.LegAnimations
         }
         private void Update()
         {
-            if(IsMoving)
+            if (_movement is not null)
             {
-                var movement = _movement.Value;
-                movement.Progress = Mathf.Clamp01(movement.Progress + Time.deltaTime * _stepSpeed);
-                _position = movement.Evaluate(Vector3.up * _high, _stepCurve);
-                _movement = movement.Progress < 1 ? movement : null;
+                transform.position = _movement.Value.ToPosition;
             }
-
-            _transform.position = _position;
         }
         public void MoveTo(Vector3 targetPostion)
         {

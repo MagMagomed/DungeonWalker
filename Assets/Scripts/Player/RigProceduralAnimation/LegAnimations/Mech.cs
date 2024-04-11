@@ -4,25 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 namespace Assets.Scripts.Player.RigProceduralAnimation.LegAnimations
 {
     public class Mech : MonoBehaviour
     {
         [SerializeField] private LegData[] _legs;
+        [SerializeField] private float _minDistance;
         [SerializeField] private float _stepLength = 0.75f;
         private void Update()
         {
             for(int i = 0; i < _legs.Length; i++)
             {
                 ref var legData = ref _legs[i];
-                if(!CanMove(i)) continue;
-                if(!legData.Leg.IsMoving 
-                    && !(Vector3.Distance(legData.Leg.Position, legData.Raycast.Position) > _stepLength)
-                    )
-                {
-                    continue;
-                }
                 legData.Leg.MoveTo(legData.Raycast.Position);
             }
         }
