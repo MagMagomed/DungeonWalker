@@ -13,12 +13,15 @@ namespace Assets.Scripts.Player.RigProceduralAnimation.LegAnimations
         [SerializeField] private LegData[] _legs;
         [SerializeField] private float _minDistance;
         [SerializeField] private float _stepLength = 0.75f;
+        [SerializeField] private float _up = 0.75f;
+        [SerializeField] private Vector3 _fixNormal;
         private void Update()
         {
             for(int i = 0; i < _legs.Length; i++)
             {
                 ref var legData = ref _legs[i];
-                legData.Leg.MoveTo(legData.Raycast.Position);
+                legData.Leg.MoveTo(legData.Raycast.Position + Vector3.up * _up);
+                legData.Leg.RotateOn(legData.Raycast.Normal);
             }
         }
         private bool CanMove(int legIndex)

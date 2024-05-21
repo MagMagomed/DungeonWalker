@@ -17,6 +17,7 @@ namespace Assets.Scripts.Player.RigProceduralAnimation.LegAnimations
 
         private Vector3 _position;
         private Movement? _movement;
+        private Rotation? _rotation;
         private Transform _transform;
 
         public Vector3 Position => _position;
@@ -31,6 +32,10 @@ namespace Assets.Scripts.Player.RigProceduralAnimation.LegAnimations
             if (_movement is not null)
             {
                 transform.position = _movement.Value.ToPosition;
+            }
+            if(_rotation is not null)
+            {
+                transform.LookAt(_rotation.Value.ToRotation);
             }
         }
         public void MoveTo(Vector3 targetPostion)
@@ -53,6 +58,33 @@ namespace Assets.Scripts.Player.RigProceduralAnimation.LegAnimations
                     ToPosition = targetPostion
                 };
             }
+        }
+        public void RotateOn(Vector3 targetRotate)
+        {
+            if (_rotation is null)
+            {
+                _rotation = new Rotation()
+                {
+                    Progress = 0f,
+                    FromRotation = _transform.rotation.eulerAngles,
+                    ToRotation = targetRotate
+                };
+            }
+            else
+            {
+                _rotation = new Rotation()
+                {
+                    Progress = _rotation.Value.Progress,
+                    FromRotation = _rotation.Value.FromRotation,
+                    ToRotation = targetRotate
+                };
+            }
+        }
+        private struct Rotation
+        {
+            public float Progress;
+            public Vector3 FromRotation;
+            public Vector3 ToRotation;
         }
         private struct Movement
         {
